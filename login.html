@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
-    <title>乐优商城--登录页面</title>
+    <title>微商城--登录页面</title>
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css"/>
     <link rel="stylesheet" type="text/css" href="css/pages-login.css"/>
@@ -22,11 +22,11 @@
         <div class="py-container login">
             <div class="loginform">
                 <ul class="sui-nav nav-tabs tab-wraped">
-                    <li>
+                    <!--<li>
                         <a href="#index" data-toggle="tab">
                             <h3>扫描登录</h3>
                         </a>
-                    </li>
+                    </li>-->
                     <li class="active">
                         <a href="#profile" data-toggle="tab">
                             <h3>账户登录</h3>
@@ -34,10 +34,10 @@
                     </li>
                 </ul>
                 <div class="tab-content tab-wraped">
-                    <div id="index" class="tab-pane">
+                    <!--<div id="index" class="tab-pane">
                         <p>二维码登录，暂为官网二维码</p>
                         <img src="img/wx_cz.jpg"/>
-                    </div>
+                    </div>-->
                     <div id="profile" class="tab-pane  active">
                         <span v-text="msg"></span>
                         <form class="sui-form">
@@ -109,11 +109,11 @@
         },
         methods:{
             login(){
-                leyou.http.post("/user/login",leyou.stringify(this.form))
+                leyou.http.post("/auth/accredit",leyou.stringify(this.form))
                     .then(resp => {
                         if(resp.status === 200){
                             const url = leyou.getUrlParam("returnUrl");
-                            window.location = url || 'http://www.leyou.com';
+                            window.location = url || 'http://www.mall.com';
                         }
                     })
                     .catch(() => this.msg = '用户名或密码错误')
