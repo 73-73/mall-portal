@@ -626,4 +626,11 @@ const ly = leyou = {
      * 将请求参数字符串格式化为js对象
      */
     parse,
+
+    /**
+     * 验证是否登录
+     */
+    verifyUser() {
+        return this.http.get("/auth/verify");
+    }
 }
