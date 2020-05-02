@@ -95,7 +95,7 @@
                         <span><em>已节省：</em><i>-¥20.00</i></span>
                     </div>
                     <div class="sumbtn">
-                        <a class="sum-btn"  href="getOrderInfo.html"  target="_blank">结算</a>
+                        <a class="sum-btn" href="#" @click.prevent="toOrderInfo" target="_blank">结算</a>
                     </div>
                 </div>
             </div>
@@ -340,6 +340,17 @@
                     var curUrl = window.location.href;
                     //跳转到登录界面，登陆成功后再跳转回来
                     window.location.href = "http://www.mall.com/login.html?returnUrl=" + curUrl;
+                })
+            },
+            toOrderInfo() {
+                // 判断是否登录
+                ly.verifyUser().then(() => {
+                    // 已登录
+                    //把相关信息存储到webStore中
+                    ly.store.set("selectedCarts",this.selected);
+                    window.location.href = "/OrderInfo.html"
+                }).catch(() => {
+                    window.location.href = "/login.html?returnUrl=" + window.location.href;
                 })
             }
         },
