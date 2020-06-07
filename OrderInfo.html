@@ -137,22 +137,48 @@
                         <h5>送货清单</h5>
                     </div>
                     <div class="step-cont">
-            <!--            <ul class="send-detail">
-                            <li>
+                        <!--            <ul class="send-detail">
+                                        <li>
+                                            <div class="sendGoods">
+                                                <ul class="yui3-g">
+                                                    <li class="yui3-u-1-6">
+                                                        <span><img width="70px" height="70px" src="img/goods.png"/></span>
+                                                    </li>
+                                                    <li class="yui3-u-7-12">
+                                                        <div class="desc">macbook air 2017新款，带bar 顺畅装逼体验</div>
+                                                        <div class="seven">7天无理由退货</div>
+                                                    </li>
+                                                    <li class="yui3-u-1-12">
+                                                        <div class="price">￥8848.00</div>
+                                                    </li>
+                                                    <li class="yui3-u-1-12">
+                                                        <div class="num">X1</div>
+                                                    </li>
+                                                    <li class="yui3-u-1-12">
+                                                        <div class="exit">有货</div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>-->
+                        <ul class="send-detail">
+                            <li v-for="(cart,index) in carts" :key="index">
                                 <div class="sendGoods">
                                     <ul class="yui3-g">
                                         <li class="yui3-u-1-6">
-                                            <span><img width="70px" height="70px" src="img/goods.png"/></span>
+                                            <span><img width="70px" height="70px" :src="cart.image"/></span>
                                         </li>
                                         <li class="yui3-u-7-12">
-                                            <div class="desc">macbook air 2017新款，带bar 顺畅装逼体验</div>
-                                            <div class="seven">7天无理由退货</div>
+                                            <div class="desc">{{cart.title}}</div>
+                                            <div class="seven">
+                                                <span v-for="(v) in JSON.parse(cart.ownSpec)">{{v + "  "}} </span>
+                                            </div>
                                         </li>
                                         <li class="yui3-u-1-12">
-                                            <div class="price">￥8848.00</div>
+                                            <div class="price">￥{{ly.formatPrice(cart.price * cart.num)}}</div>
                                         </li>
                                         <li class="yui3-u-1-12">
-                                            <div class="num">X1</div>
+                                            <div class="num">{{cart.num}}</div>
                                         </li>
                                         <li class="yui3-u-1-12">
                                             <div class="exit">有货</div>
@@ -160,33 +186,7 @@
                                     </ul>
                                 </div>
                             </li>
-                        </ul>-->
-						<ul class="send-detail">
-							<li v-for="(cart,index) in carts" :key="index">
-								<div class="sendGoods">
-									<ul class="yui3-g">
-										<li class="yui3-u-1-6">
-											<span><img width="70px" height="70px" :src="cart.image"/></span>
-										</li>
-										<li class="yui3-u-7-12">
-											<div class="desc">{{cart.title}}</div>
-											<div class="seven">
-												<span v-for="(v) in JSON.parse(cart.ownSpec)">{{v + "  "}} </span>
-											</div>
-										</li>
-										<li class="yui3-u-1-12">
-											<div class="price">￥{{ly.formatPrice(cart.price * cart.num)}}</div>
-										</li>
-										<li class="yui3-u-1-12">
-											<div class="num">{{cart.num}}</div>
-										</li>
-										<li class="yui3-u-1-12">
-											<div class="exit">有货</div>
-										</li>
-									</ul>
-								</div>
-							</li>
-						</ul>
+                        </ul>
                     </div>
                     <div class="hr"></div>
                 </div>
@@ -270,62 +270,62 @@
             order: {
                 //付款方式，1：微信付款  2：货到付款，我这里默认设置为货到付款，隐去了微信付款
                 paymentType: 2,
-				postFee: 1000,
-				discount: 0 ,
+                postFee: 1000,
+                discount: 0,
             },
             carts: []
 
         },
-		computed: {
-			totalNum(){
-				return this.carts.reduce((c1, c2) => c1 + c2.num, 0)
-			},
-			totalPay(){
-				return this.carts.reduce((c1, c2) => c1 + c2.price * c2.num, 0);
-			},
-			actualPay(){
-				return this.totalPay + this.order.postFee - this.order.discount;
-			}
-		},
-		methods: {
-			submit() {
-				// 把购物车数据处理成订单详情
-				const orderDetails = this.carts.map(({userId, ...rest}) => rest);
-				// 处理物流信息
-				const addr = this.addresses[this.selectedAddress];
-				const obj = {
-					receiver: addr.name,
-					receiverState: addr.state,
-					receiverCity: addr.city,
-					receiverAddress: addr.address,
-					receiverDistrict: addr.district,
-					receiverMobile: addr.phone,
-					receiverZip: addr.zipCode
-				};
-				// 复制到订单对象
-				Object.assign(this.order, obj, {
-					orderDetails,
-					totalPay: this.totalPay,
-					actualPay: this.actualPay,
-				});
-				// 提交订单
-				ly.http.post("/order", this.order,
-						//用于防止精度丢失
-						{
-							transformResponse: [
-								function(data){
-									return data;
-								}
-							]
-						}
-				).then(({data}) => {
-					// 在线支付，需要到付款页
-					window.location = "paysuccess.html?money=" + ly.formatPrice(this.actualPay);
-				}).catch((resp) => {
-					alert("订单提交失败，可能是缺货!")
-				})
-			}
-		},
+        computed: {
+            totalNum() {
+                return this.carts.reduce((c1, c2) => c1 + c2.num, 0)
+            },
+            totalPay() {
+                return this.carts.reduce((c1, c2) => c1 + c2.price * c2.num, 0);
+            },
+            actualPay() {
+                return this.totalPay + this.order.postFee - this.order.discount;
+            }
+        },
+        methods: {
+            submit() {
+                // 把购物车数据处理成订单详情
+                const orderDetails = this.carts.map(({userId, ...rest}) => rest);
+                // 处理物流信息
+                const addr = this.addresses[this.selectedAddress];
+                const obj = {
+                    receiver: addr.name,
+                    receiverState: addr.state,
+                    receiverCity: addr.city,
+                    receiverAddress: addr.address,
+                    receiverDistrict: addr.district,
+                    receiverMobile: addr.phone,
+                    receiverZip: addr.zipCode
+                };
+                // 复制到订单对象
+                Object.assign(this.order, obj, {
+                    orderDetails,
+                    totalPay: this.totalPay,
+                    actualPay: this.actualPay,
+                });
+                // 提交订单
+                ly.http.post("/order", this.order,
+                    //用于防止精度丢失
+                    {
+                        transformResponse: [
+                            function (data) {
+                                return data;
+                            }
+                        ]
+                    }
+                ).then(({data}) => {
+                    // 在线支付，需要到付款页
+                    window.location = "paysuccess.html?money=" + ly.formatPrice(this.actualPay);
+                }).catch((error) => {
+                    alert("订单提交失败，可能商品：" + error.response.data + "缺货!");
+                })
+            }
+        },
         created() {
             ly.verifyUser().then(() => {
                 //已登录
