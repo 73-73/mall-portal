@@ -20,10 +20,6 @@
 
     <div class="cart py-container">
 
-        <!--logoArea-->
-        <!--<div class="logoArea">
-            <div class="fl logo"><span class="title">订单结算</span></div>
-        </div>-->
 
         <!--主内容-->
         <div class="checkout py-container">
@@ -137,30 +133,6 @@
                         <h5>送货清单</h5>
                     </div>
                     <div class="step-cont">
-                        <!--            <ul class="send-detail">
-                                        <li>
-                                            <div class="sendGoods">
-                                                <ul class="yui3-g">
-                                                    <li class="yui3-u-1-6">
-                                                        <span><img width="70px" height="70px" src="img/goods.png"/></span>
-                                                    </li>
-                                                    <li class="yui3-u-7-12">
-                                                        <div class="desc">macbook air 2017新款，带bar 顺畅装逼体验</div>
-                                                        <div class="seven">7天无理由退货</div>
-                                                    </li>
-                                                    <li class="yui3-u-1-12">
-                                                        <div class="price">￥8848.00</div>
-                                                    </li>
-                                                    <li class="yui3-u-1-12">
-                                                        <div class="num">X1</div>
-                                                    </li>
-                                                    <li class="yui3-u-1-12">
-                                                        <div class="exit">有货</div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>-->
                         <ul class="send-detail">
                             <li v-for="(cart,index) in carts" :key="index">
                                 <div class="sendGoods">
@@ -255,16 +227,6 @@
                     zipCode: "000000", // 邮编
                     default: true
                 },
-                /*{
-                    name:"张三",// 收件人姓名
-                    phone:"10086",// 电话
-                    state:"江西省",// 省份
-                    city:"南昌",// 城市
-                    district:"新建区",// 区
-                    address:"新建县",// 街道地址
-                    zipCode:"000000", // 邮编
-                    default: false
-                }*/
             ],
             selectedAddress: 0,
             order: {
